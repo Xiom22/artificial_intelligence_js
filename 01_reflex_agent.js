@@ -8,18 +8,26 @@ function reflex_agent(location, state){
 }
 
 function test(states){
+		time += 1
       	var location = states[0];		
       	var state = states[0] == "A" ? states[1] : states[2];
       	var action_result = reflex_agent(location, state);
-      	document.getElementById("log").innerHTML+="<br>Location: ".concat(location).concat(" | Action: ").concat(action_result);
-      	if (action_result == "CLEAN"){
+      	document.getElementById("log").innerHTML+="<br>Location: ".concat(location).concat(" | Action: ").concat(action_result).concat(` | State: ${states}`);	
+		if(time === 5) {
+			states[1] = states[2] = "DIRTY"
+			document.getElementById("log").innerHTML+="<br>Se ensuciaron las dos locaciones"
+		} else if (states[0] == "A" && states[1] == "CLEAN" && states[2] == "CLEAN") {
+			document.getElementById("log").innerHTML+="<br><br>FINALIZO"
+			return 
+		} 
+		if (action_result == "CLEAN"){
         	if (location == "A") states[1] = "CLEAN";
          	else if (location == "B") states[2] = "CLEAN";
       	}
       	else if (action_result == "RIGHT") states[0] = "B";
-      	else if (action_result == "LEFT") states[0] = "A";		
+      	else if (action_result == "LEFT") states[0] = "A"; 
 	setTimeout(function(){ test(states); }, 2000);
 }
-
+var time = 0
 var states = ["A","DIRTY","DIRTY"];
 test(states);
